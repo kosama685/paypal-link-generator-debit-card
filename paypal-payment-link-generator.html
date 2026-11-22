@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#102d60">
+<title>PayPal Payment Link Studio</title>
+<style>
+:root{color-scheme:light;--navy:#102d60;--blue:#0875d1;--sky:#eaf4ff;--ink:#172033;--muted:#667085;--line:#dfe5ee;--bg:#f4f7fb;--green:#087443;--amber:#9a5100;--red:#b42318;--radius:18px;--shadow:0 18px 55px rgba(16,45,96,.10)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;font-size:15px;line-height:1.5}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:var(--blue)}
+.hero{background:radial-gradient(circle at 85% 10%,rgba(255,255,255,.22),transparent 28%),linear-gradient(120deg,#102d60,#066fc0);color:#fff;padding:34px 20px 42px}.hero-inner{max-width:1180px;margin:auto}.eyebrow{font-size:11px;letter-spacing:.15em;font-weight:800;opacity:.82}.hero h1{font-size:clamp(27px,4vw,42px);line-height:1.1;margin:10px 0 12px;letter-spacing:-.035em}.hero p{max-width:720px;margin:0;color:#e2efff}.hero-meta{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}.pill{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700}
+.wrap{max-width:1180px;margin:26px auto 60px;padding:0 18px}.layout{display:grid;grid-template-columns:minmax(300px,450px) minmax(0,1fr);gap:20px;align-items:start}.panel{background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px}.panel h2{font-size:18px;margin:0 0 4px;letter-spacing:-.02em}.sub{font-size:13px;color:var(--muted);margin:0 0 18px}.field{margin-top:14px}.field label,.group-label{display:block;font-size:12px;font-weight:800;color:#344054;margin:0 0 6px}.field input,.field select,.field textarea{width:100%;min-height:44px;border:1px solid #cfd7e3;border-radius:10px;padding:10px 12px;background:#fff;color:var(--ink);outline:none}.field textarea{min-height:72px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:#4b9ce2;box-shadow:0 0 0 3px rgba(8,117,209,.12)}.hint{font-size:11.5px;color:var(--muted);margin:5px 0 0}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}.method-list{display:grid;gap:9px;margin-top:9px}.method{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:12px}.method input{margin:3px 0 0;accent-color:var(--blue)}.method b{display:block;font-size:13px}.method small{display:block;color:var(--muted);font-size:11px;line-height:1.4;margin-top:2px}.method .tag{margin-left:auto;font-size:10px;white-space:nowrap;background:#f2f4f7;color:#475467;padding:4px 7px;border-radius:999px;font-weight:800}.method.locked{background:#fafbfc}.method.locked .tag{background:#fff4e5;color:var(--amber)}
+.buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.btn{border:1px solid #d0d5dd;background:#fff;color:#344054;border-radius:10px;padding:11px 14px;font-weight:800;font-size:12px;transition:.15s}.btn:hover{transform:translateY(-1px);box-shadow:0 5px 15px rgba(16,24,40,.08)}.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.dark{background:#172033;border-color:#172033;color:#fff}.btn:disabled{opacity:.48;cursor:not-allowed;transform:none;box-shadow:none}.notice{border-radius:12px;padding:12px 13px;font-size:12px;line-height:1.5;margin-top:15px}.notice.info{background:#eff8ff;border:1px solid #b2ddff;color:#184c7a}.notice.warn{background:#fffaeb;border:1px solid #fedf89;color:#7a2e0e}.notice.success{background:#ecfdf3;border:1px solid #abefc6;color:#05603a}.notice strong{font-weight:850}.status{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;background:#eff8ff;color:#175cd3;font-size:11px;font-weight:800}.status:before{content:"";width:7px;height:7px;border-radius:50%;background:currentColor}.preview-head{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:14px}.preview{background:linear-gradient(135deg,#f8fbff,#eef3fa);border:1px dashed #cbd6e5;border-radius:15px;min-height:400px;padding:25px;display:grid;place-items:center}.checkout{width:min(100%,390px);background:#fff;border:1px solid #e3e8f0;border-radius:20px;padding:25px;box-shadow:0 14px 38px rgba(16,45,96,.12);text-align:center}.brand{display:inline-flex;gap:9px;align-items:center;justify-content:center;font-size:15px;font-weight:900;letter-spacing:-.03em;color:#102d60}.brand-mark{display:grid;place-items:center;width:32px;height:32px;background:#e9f3ff;border-radius:10px;color:#086fbd;font-size:19px}.checkout .merchant{font-size:11px;color:var(--muted);margin-top:13px;overflow-wrap:anywhere}.checkout .product{font-size:17px;font-weight:800;margin:8px 0 2px}.checkout .desc{font-size:12px;color:var(--muted);margin:0 0 10px;overflow-wrap:anywhere}.checkout .amount{font-size:35px;line-height:1.15;font-weight:900;letter-spacing:-.045em;margin:12px 0 20px;color:#101828}.pay-action{display:block;width:100%;border-radius:11px;padding:13px 14px;text-decoration:none;color:#fff;font-weight:850;font-size:13px;margin-top:9px;border:0}.pay-action.pp{background:linear-gradient(100deg,#003087,#009cde)}.pay-action.card{background:#1c2433}.pay-action.disabled{background:#f2f4f7;color:#667085;border:1px solid #e4e7ec;cursor:not-allowed}.checkout .or{font-size:10px;letter-spacing:.12em;color:#98a2b3;margin:16px 0 2px;font-weight:800}.secure{display:flex;gap:6px;justify-content:center;align-items:center;color:#667085;font-size:10px;margin-top:17px}.safe{font-size:10px;color:#98a2b3;line-height:1.45;margin-top:8px}.output-wrap{margin-top:19px}.output-wrap label{display:block;font-size:12px;font-weight:800;margin-bottom:7px}.output-wrap textarea{width:100%;min-height:120px;border:1px solid var(--line);border-radius:10px;padding:10px;font:11px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;resize:vertical}.url-line{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;margin-top:8px}.url-line input{width:100%;min-width:0;border:1px solid var(--line);border-radius:9px;padding:10px;font-size:12px;background:#f9fafb}.foot{max-width:1180px;margin:0 auto;padding:0 18px 35px;color:var(--muted);font-size:11px}.foot a{font-weight:700}.hidden{display:none!important}.client-shell{max-width:620px;margin:48px auto;padding:18px}.client-shell .checkout{margin:auto}.client-help{text-align:center;color:var(--muted);font-size:11px;margin:15px auto;max-width:420px}.error{color:var(--red);font-size:12px;font-weight:700;margin-top:10px}.footerline{border-top:1px solid var(--line);margin-top:20px;padding-top:15px;color:var(--muted);font-size:11px;text-align:center}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.panel{padding:18px}.preview{min-height:350px}}@media(max-width:520px){.hero{padding:27px 18px 32px}.wrap{padding:0 12px;margin-top:14px}.two{grid-template-columns:1fr}.buttons .btn{flex:1 1 100%}.preview{padding:12px}.checkout{padding:20px}.preview-head{align-items:flex-start;flex-direction:column}.url-line{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="hero" id="builderHero">
+ <div class="hero-inner">
+  <div class="eyebrow">PAYMENTS • LINK STUDIO</div>
+  <h1>PayPal Payment Link Generator</h1>
+  <p>Create a fixed-price PayPal checkout link, preview the customer payment page, and download a standalone HTML checkout page. No API keys or card data storage required for the basic PayPal link.</p>
+  <div class="hero-meta"><span class="pill">PayPal hosted checkout</span><span class="pill">Guest card checkout when eligible</span><span class="pill">24 PayPal-listed currencies</span><span class="pill">Share & download HTML</span></div>
+ </div>
+</header>
+<main class="wrap" id="builderMain">
+ <div class="layout">
+  <section class="panel" aria-label="Payment settings">
+   <h2>Payment setup</h2><p class="sub">Enter the receiving PayPal email and the amount your customer must pay.</p>
+   <div class="field"><label for="email">PayPal account email</label><input id="email" type="email" value="osamakhancv@gmail.com" autocomplete="off" maxlength="254" placeholder="you@example.com"><p class="hint">Uses your PayPal receiving email only. No client ID, API secret, or password is requested.</p></div>
+   <div class="field"><label for="publicUrl">Public URL of this generator (optional)</label><input id="publicUrl" type="url" placeholder="https://yourdomain.com/payment-link-generator.html"><p class="hint">Enter this after you upload the generator. It lets you create a working client link even when you are editing a local copy.</p></div>
+   <div class="field"><label for="item">Product / service name</label><input id="item" maxlength="127" value="Product name" placeholder="e.g. Website development"></div>
+   <div class="field"><label for="description">Additional description (optional)</label><textarea id="description" maxlength="350" placeholder="A short description shown on the customer checkout page."></textarea></div>
+   <div class="two">
+    <div class="field"><label for="amount">Total amount</label><input id="amount" type="number" min="0.01" step="0.01" value="15" inputmode="decimal"></div>
+    <div class="field"><label for="currency">Currency</label><select id="currency"></select></div>
+   </div>
+   <p class="hint" id="currencyHint">Currency availability depends on the receiving account and its country.</p>
+   <div class="field"><label for="invoice">Invoice / order reference (optional)</label><input id="invoice" maxlength="127" placeholder="INV-1001"></div>
+   <div class="field"><label for="returnUrl">Return URL after checkout (optional)</label><input id="returnUrl" type="url" placeholder="https://example.com/thank-you"></div>
+   <div class="field"><label for="cancelUrl">Cancel URL (optional)</label><input id="cancelUrl" type="url" placeholder="https://example.com/payment-cancelled"></div>
+   <div class="field"><span class="group-label">Payment methods to display</span>
+    <div class="method-list">
+     <label class="method"><input type="checkbox" id="mPaypal" checked><span><b>PayPal</b><small>Opens PayPal's secure hosted checkout.</small></span><span class="tag">Available</span></label>
+     <label class="method"><input type="checkbox" id="mCard" checked><span><b>Debit / credit card</b><small>Uses PayPal guest checkout. Card entry is on PayPal, if PayPal offers it to that buyer.</small></span><span class="tag">Conditional</span></label>
+     <label class="method locked"><input type="checkbox" id="mApple"><span><b>Apple Pay</b><small>Show as unavailable until Expanded Checkout and the website domain are enabled.</small></span><span class="tag">Setup needed</span></label>
+     <label class="method locked"><input type="checkbox" id="mGoogle"><span><b>Google Pay</b><small>Show as unavailable until Expanded Checkout and merchant integration are enabled.</small></span><span class="tag">Setup needed</span></label>
+    </div>
+   </div>
+   <div id="formError" class="error" role="alert" aria-live="polite"></div>
+   <div class="buttons">
+    <button class="btn primary" id="generateBtn" type="button">Generate payment link</button>
+    <button class="btn" id="resetBtn" type="button">Reset</button>
+   </div>
+   <div class="notice info"><strong>Card safety:</strong> This page never asks customers for card numbers, expiry dates, or CVV. Customers enter card details only on PayPal's own secure checkout page.</div>
+   <div class="notice warn"><strong>Personal-account limitation:</strong> Your PayPal email can be used to create the basic payment link, but PayPal Saudi Arabia recommends Personal accounts mainly for casual sellers and lists debit/credit-card acceptance and PayPal Checkout among Business-account features. A personal account therefore cannot guarantee guest card checkout. For regular commercial sales, check whether you should use a Business account. <a href="https://securepayments.paypal.com/sa/cshelp/article/what-is-the-difference-between-personal-and-business-accounts%E2%80%AF-help318?locale.x=en_SA" target="_blank" rel="noopener noreferrer">PayPal account comparison</a>.</div>
+  </section>
+  <section class="panel" aria-label="Checkout preview and generated files">
+   <div class="preview-head"><div><h2>Customer checkout preview</h2><p class="sub" style="margin:3px 0 0">This is the page your client sees before leaving for PayPal.</p></div><span class="status" id="status">Preview only</span></div>
+   <div class="preview"><article class="checkout" id="checkoutPreview"><div class="brand"><span class="brand-mark">↗</span>Secure payment</div><div class="merchant">Paying to osamakhancv@gmail.com</div><div class="product">Product name</div><div class="desc">Secure checkout powered by PayPal</div><div class="amount">USD 15.00</div><div class="pay-action pp">Pay with PayPal</div><div class="or">OR PAY BY CARD</div><div class="pay-action card">Debit / credit card</div><div class="secure">▣ Secure payment • Your card details stay with PayPal</div></article></div>
+   <div class="output-wrap">
+    <label for="paypalUrl">Direct PayPal payment URL</label>
+    <div class="url-line"><input id="paypalUrl" readonly placeholder="Generate a payment link first"><button class="btn" id="copyPaypal" type="button" disabled>Copy URL</button></div>
+    <label for="shareUrl" style="margin-top:13px">Shareable checkout page URL</label>
+    <div class="url-line"><input id="shareUrl" readonly placeholder="Generate a payment link first"><button class="btn" id="copyShare" type="button" disabled>Copy link</button></div>
+    <div class="buttons"><button class="btn dark" id="downloadHtml" type="button" disabled>Download standalone HTML</button><button class="btn" id="copyHtml" type="button" disabled>Copy checkout HTML</button><button class="btn" id="openPreview" type="button" disabled>Open customer page</button></div>
+    <p class="hint">Upload the downloaded HTML file to your website/hosting, then share its public HTTPS address. The generated share link works when this generator itself is already hosted online. A local <code>file://</code> address is not public.</p>
+    <label for="htmlOutput" style="margin-top:15px">Complete standalone checkout HTML</label><textarea id="htmlOutput" readonly spellcheck="false" placeholder="The complete customer checkout page source will appear here after generation."></textarea>
+   </div>
+   <div class="notice success"><strong>Payment verification:</strong> A thank-you or return URL is not proof that a payment succeeded. Verify each transaction in your PayPal account before delivering products or services. This static HTML page does not include server-side payment verification, webhooks, refunds, or order automation.</div>
+  </section>
+ </div>
+</main>
+<footer class="foot" id="builderFooter">Currency list based on PayPal's published supported-currency reference (24 currencies; last updated July 10, 2026). Some currencies are in-country only, and HUF, JPY, and TWD do not use decimal fractions. See <a href="https://developer.paypal.com/reports/reference/supported-currencies/" target="_blank" rel="noopener noreferrer">PayPal supported currencies</a>, <a href="https://www.paypal.com/sa/cshelp/article/how-do-i-accept-cards-with-checkout-using-the-guest-checkout-option--help307?locale.x=en_SA" target="_blank" rel="noopener noreferrer">Guest Checkout</a>, and <a href="https://www.paypal.com/sa/cshelp/article/what-is-the-difference-between-personal-and-business-accounts%E2%80%AF-help318?locale.x=en_SA" target="_blank" rel="noopener noreferrer">Personal vs Business accounts</a>.</footer>
+<div id="clientMode" class="client-shell hidden" aria-live="polite"></div>
+<script>
+(function(){
+ 'use strict';
+ const CURRENCIES=[
+  ['AUD','Australian Dollar'],['BRL','Brazilian Real'],['CAD','Canadian Dollar'],['CNY','Chinese Renminbi'],['CZK','Czech Koruna'],['DKK','Danish Krone'],['EUR','Euro'],['HKD','Hong Kong Dollar'],['HUF','Hungarian Forint'],['ILS','Israeli New Shekel'],['JPY','Japanese Yen'],['MYR','Malaysian Ringgit'],['MXN','Mexican Peso'],['TWD','New Taiwan Dollar'],['NZD','New Zealand Dollar'],['NOK','Norwegian Krone'],['PHP','Philippine Peso'],['PLN','Polish Złoty'],['GBP','Pound Sterling'],['SGD','Singapore Dollar'],['SEK','Swedish Krona'],['CHF','Swiss Franc'],['THB','Thai Baht'],['USD','United States Dollar']
+ ];
+ const ZERO_DECIMAL=new Set(['HUF','JPY','TWD']);
+ const $=id=>document.getElementById(id);
+ const currencySelect=$('currency');
+ CURRENCIES.forEach(([code,name])=>{const option=document.createElement('option');option.value=code;option.textContent=code+' — '+name;if(code==='USD')option.selected=true;currencySelect.appendChild(option);});
+ function esc(value){return String(value??'').replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));}
+ function safeJSON(value){return JSON.stringify(value).replace(/[<>&\u2028\u2029]/g,ch=>({'<':'\\u003c','>':'\\u003e','&':'\\u0026','\u2028':'\\u2028','\u2029':'\\u2029'}[ch]));}
+ function amountDigits(currency){return ZERO_DECIMAL.has(currency)?0:2;}
+ function readConfig(){
+  const currency=currencySelect.value;
+  const raw=$('amount').value.trim();
+  const numeric=Number(raw);
+  const digits=amountDigits(currency);
+  return {
+   email:$('email').value.trim(),item:$('item').value.trim()||'Payment',description:$('description').value.trim(),
+   amount:Number.isFinite(numeric)&&numeric>0?numeric.toFixed(digits):'',currency,
+   invoice:$('invoice').value.trim(),returnUrl:$('returnUrl').value.trim(),cancelUrl:$('cancelUrl').value.trim(),
+   methods:{paypal:$('mPaypal').checked,card:$('mCard').checked,apple:$('mApple').checked,google:$('mGoogle').checked}
+  };
+ }
+ function isHttpUrl(value){if(!value)return true;try{const url=new URL(value);return url.protocol==='https:'||url.protocol==='http:';}catch(_){return false;}}
+ function validate(cfg){
+  if(!cfg.email||!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cfg.email))return 'Enter a valid PayPal receiving email address.';
+  if(!cfg.amount)return 'Enter an amount greater than zero.';
+  if(!cfg.methods.paypal&&!cfg.methods.card&&!cfg.methods.apple&&!cfg.methods.google)return 'Select at least one payment method to display.';
+  if(cfg.returnUrl&&!isHttpUrl(cfg.returnUrl))return 'Return URL must begin with http:// or https://.';
+  if(cfg.cancelUrl&&!isHttpUrl(cfg.cancelUrl))return 'Cancel URL must begin with http:// or https://.';
+  const publicUrl=$('publicUrl').value.trim();
+  if(publicUrl&&!isHttpUrl(publicUrl))return 'Public generator URL must begin with http:// or https://.';
+  if(cfg.item.length>127||cfg.invoice.length>127)return 'Product name and invoice reference must each be 127 characters or fewer.';
+  return '';
+ }
+ function paypalPaymentUrl(cfg){
+  const params=new URLSearchParams();
+  params.set('cmd','_xclick');params.set('business',cfg.email);params.set('currency_code',cfg.currency);params.set('amount',cfg.amount);
+  params.set('item_name',cfg.item);params.set('no_note','1');
+  if(cfg.invoice)params.set('invoice',cfg.invoice);
+  if(cfg.returnUrl)params.set('return',cfg.returnUrl);
+  if(cfg.cancelUrl)params.set('cancel_return',cfg.cancelUrl);
+  return 'https://www.paypal.com/cgi-bin/webscr?'+params.toString();
+ }
+ function formatAmount(cfg){try{return new Intl.NumberFormat(undefined,{style:'currency',currency:cfg.currency,minimumFractionDigits:amountDigits(cfg.currency),maximumFractionDigits:amountDigits(cfg.currency)}).format(Number(cfg.amount));}catch(_){return cfg.currency+' '+cfg.amount;}}
+ function b64urlEncode(str){const bytes=new TextEncoder().encode(str);let binary='';bytes.forEach(byte=>binary+=String.fromCharCode(byte));return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');}
+ function b64urlDecode(str){const padded=str.replace(/-/g,'+').replace(/_/g,'/')+'==='.slice((str.length+3)%4);const binary=atob(padded);const bytes=Uint8Array.from(binary,ch=>ch.charCodeAt(0));return new TextDecoder().decode(bytes);}
+ function createShareUrl(cfg){const supplied=$('publicUrl').value.trim();let base=supplied||location.href.split('#')[0];if(supplied){const u=new URL(supplied);u.hash='';base=u.toString();}return base+'#checkout='+b64urlEncode(JSON.stringify(cfg));}
+ function renderPreview(cfg){
+  const preview=$('checkoutPreview');const children=[];
+  const add=(tag,cls,txt)=>{const el=document.createElement(tag);if(cls)el.className=cls;if(txt!==undefined)el.textContent=txt;children.push(el);return el;};
+  const brand=add('div','brand');const mark=document.createElement('span');mark.className='brand-mark';mark.textContent='↗';brand.append(mark,document.createTextNode('Secure payment'));
+  add('div','merchant','Paying to '+cfg.email);add('div','product',cfg.item);if(cfg.description)add('div','desc',cfg.description);else add('div','desc','Secure checkout powered by PayPal');
+  add('div','amount',formatAmount(cfg));
+  if(cfg.methods.paypal)add('div','pay-action pp','Pay with PayPal');
+  if(cfg.methods.card){add('div','or','OR PAY BY CARD');add('div','pay-action card','Debit / credit card');}
+  if(cfg.methods.apple){add('div','or','WALLET • ACTIVATION REQUIRED');add('div','pay-action disabled','Apple Pay — not activated');}
+  if(cfg.methods.google)add('div','pay-action disabled','Google Pay — not activated');
+  add('div','secure','▣ Secure payment • Card details stay with PayPal');
+  add('div','safe','Card entry and payment authorization happen on PayPal. Wallet methods remain disabled until separately onboarded and integrated.');
+  preview.replaceChildren(...children);
+ }
+ function standaloneHtml(cfg){
+  const cfgString=safeJSON(cfg);
+  return `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#102d60"><title>${esc(cfg.item)} | Secure payment</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:22px;background:linear-gradient(135deg,#f4f7fb,#eaf1fa);font-family:Arial,Helvetica,sans-serif;color:#172033}.box{width:min(420px,100%);background:#fff;border:1px solid #e2e8f0;border-radius:20px;padding:27px;box-shadow:0 15px 45px rgba(16,45,96,.13);text-align:center}.brand{font-size:16px;font-weight:800;color:#102d60}.mark{display:inline-grid;place-items:center;width:32px;height:32px;border-radius:10px;background:#e9f3ff;color:#086fbd;margin-right:8px;vertical-align:middle}.merchant{font-size:11px;color:#667085;margin-top:15px;overflow-wrap:anywhere}.item{font-size:19px;font-weight:800;margin:9px 0 3px;overflow-wrap:anywhere}.description{font-size:12px;color:#667085;line-height:1.5;overflow-wrap:anywhere}.price{font-size:36px;line-height:1.2;font-weight:900;letter-spacing:-1px;margin:17px 0 20px}.btn{display:block;width:100%;padding:14px 12px;margin-top:10px;border-radius:11px;text-decoration:none;text-align:center;font-size:14px;font-weight:800;border:0}.pp{background:linear-gradient(100deg,#003087,#009cde);color:#fff}.card{background:#172033;color:#fff}.disabled{background:#f2f4f7;border:1px solid #e4e7ec;color:#667085;cursor:not-allowed}.or{font-size:10px;letter-spacing:.12em;color:#98a2b3;font-weight:800;margin:17px 0 0}.secure{font-size:11px;color:#667085;margin-top:18px;line-height:1.5}.fine{font-size:10px;color:#98a2b3;line-height:1.5;margin-top:9px}.error{color:#b42318;font-size:12px;font-weight:700;margin-top:12px}.return-note{font-size:10px;color:#667085;margin-top:13px}@media(max-width:420px){.box{padding:22px}}
+</style></head><body><main class="box" id="checkout"><div class="brand"><span class="mark">↗</span>Secure payment</div><div class="merchant" id="merchant"></div><div class="item" id="item"></div><div class="description" id="description"></div><div class="price" id="price"></div><div id="actions"></div><div class="secure">🔒 Secure PayPal checkout. Customers enter card details only on PayPal's website, when guest card checkout is offered.</div><div class="fine">Never send card numbers, security codes, or passwords by email or chat. PayPal may ask some buyers to sign in or create an account.</div><div class="return-note">After paying, follow the confirmation shown by PayPal.</div><div class="error" id="error" hidden></div></main>
+<script>(function(){'use strict';const cfg=${cfgString};const payUrl=${safeJSON(paypalPaymentUrl(cfg))};const root=document.getElementById('actions');const el=id=>document.getElementById(id);const text=(id,value)=>{el(id).textContent=value||''};text('merchant','Payment to '+cfg.email);text('item',cfg.item);text('description',cfg.description);try{text('price',new Intl.NumberFormat(undefined,{style:'currency',currency:cfg.currency,minimumFractionDigits:${amountDigits(cfg.currency)},maximumFractionDigits:${amountDigits(cfg.currency)}}).format(Number(cfg.amount)));}catch(e){text('price',cfg.currency+' '+cfg.amount);}function addButton(label,cls,enabled){const a=document.createElement('a');a.className='btn '+cls;a.textContent=label;if(enabled){a.href=payUrl;a.target='_blank';a.rel='noopener noreferrer';}else{a.setAttribute('aria-disabled','true');a.tabIndex=-1;}root.appendChild(a);}if(cfg.methods.paypal)addButton('Pay with PayPal','pp',true);if(cfg.methods.card){const or=document.createElement('div');or.className='or';or.textContent='OR PAY BY CARD';root.appendChild(or);addButton('Debit / credit card','card',true);}if(cfg.methods.apple){const or=document.createElement('div');or.className='or';or.textContent='WALLET • SETUP REQUIRED';root.appendChild(or);addButton('Apple Pay — not activated','disabled',false);}if(cfg.methods.google)addButton('Google Pay — not activated','disabled',false);if(!root.children.length){el('error').hidden=false;el('error').textContent='No payment method is enabled. Contact the seller.';}})();<\/script></body></html>`;
+ }
+ let currentConfig=null,currentHtml='';
+ function generate(){
+  const cfg=readConfig();const err=validate(cfg);$('formError').textContent=err;
+  if(err){$('status').textContent='Check details';$('status').style.color='#b42318';return;}
+  currentConfig=cfg;currentHtml=standaloneHtml(cfg);const url=paypalPaymentUrl(cfg);const share=createShareUrl(cfg);
+  $('paypalUrl').value=url;$('shareUrl').value=share;$('htmlOutput').value=currentHtml;
+  $('copyPaypal').disabled=$('copyShare').disabled=$('downloadHtml').disabled=$('copyHtml').disabled=$('openPreview').disabled=false;
+  $('status').textContent='Link generated';$('status').style.color='#175cd3';renderPreview(cfg);
+  const local=location.protocol==='file:'&&!$('publicUrl').value.trim();$('shareUrl').title=local?'This file:// URL is only available on your own computer. Enter your public HTTPS generator URL or upload this file before sharing.':'';
+ }
+ async function copyText(text,button){if(!text)return;const label=button.textContent;try{await navigator.clipboard.writeText(text);}catch(_){const ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');ta.remove();}button.textContent='Copied';setTimeout(()=>button.textContent=label,1400);}
+ function downloadHtml(){if(!currentHtml)return;const blob=new Blob([currentHtml],{type:'text/html;charset=utf-8'});const objectUrl=URL.createObjectURL(blob);const a=document.createElement('a');a.href=objectUrl;a.download='paypal-checkout-'+(currentConfig.currency||'USD').toLowerCase()+'.html';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(objectUrl),1500);}
+ function showClientMode(cfg){
+  document.body.classList.add('client-view');$('builderHero').classList.add('hidden');$('builderMain').classList.add('hidden');$('builderFooter').classList.add('hidden');const shell=$('clientMode');shell.classList.remove('hidden');
+  if(!cfg||!cfg.email||!cfg.amount||!cfg.currency){shell.textContent='This payment link is incomplete or invalid. Please contact the seller.';return;}
+  const card=document.createElement('article');card.className='checkout';
+  const brand=document.createElement('div');brand.className='brand';const mark=document.createElement('span');mark.className='brand-mark';mark.textContent='↗';brand.append(mark,document.createTextNode('Secure payment'));
+  const merchant=document.createElement('div');merchant.className='merchant';merchant.textContent='Payment to '+cfg.email;
+  const item=document.createElement('div');item.className='product';item.textContent=cfg.item||'Payment';
+  const desc=document.createElement('div');desc.className='desc';desc.textContent=cfg.description||'Secure checkout powered by PayPal';
+  const amount=document.createElement('div');amount.className='amount';amount.textContent=formatAmount(cfg);
+  card.append(brand,merchant,item,desc,amount);
+  const ppUrl=paypalPaymentUrl(cfg);
+  function addLink(label,cls,enabled){const a=document.createElement(enabled?'a':'div');a.className='pay-action '+cls;a.textContent=label;if(enabled){a.href=ppUrl;a.target='_blank';a.rel='noopener noreferrer';}return a;}
+  if(cfg.methods?.paypal)card.append(addLink('Pay with PayPal','pp',true));
+  if(cfg.methods?.card){const or=document.createElement('div');or.className='or';or.textContent='OR PAY BY CARD';card.append(or,addLink('Debit / credit card','card',true));}
+  if(cfg.methods?.apple){const or=document.createElement('div');or.className='or';or.textContent='WALLET • SETUP REQUIRED';card.append(or,addLink('Apple Pay — not activated','disabled',false));}
+  if(cfg.methods?.google)card.append(addLink('Google Pay — not activated','disabled',false));
+  const secure=document.createElement('div');secure.className='secure';secure.textContent='▣ Secure payment • Card details are entered on PayPal, not on this page.';
+  const fine=document.createElement('div');fine.className='safe';fine.textContent='PayPal may not offer guest card checkout to every buyer. Do not send card details by email or chat.';
+  card.append(secure,fine);shell.append(card);
+  const help=document.createElement('div');help.className='client-help';help.textContent='Questions about this payment? Contact the seller using the details they provided.';shell.append(help);
+ }
+ function loadSharedCheckout(){const match=location.hash.match(/^#checkout=(.+)$/);if(!match)return false;try{const cfg=JSON.parse(b64urlDecode(match[1]));showClientMode(cfg);return true;}catch(_){showClientMode(null);return true;}}
+ function reset(){['item','description','amount','invoice','returnUrl','cancelUrl','publicUrl'].forEach(id=>$(id).value=({item:'Product name',description:'',amount:'15',invoice:'',returnUrl:'',cancelUrl:'',publicUrl:''})[id]);$('email').value='osamakhancv@gmail.com';$('currency').value='USD';$('mPaypal').checked=$('mCard').checked=true;$('mApple').checked=$('mGoogle').checked=false;$('formError').textContent='';$('paypalUrl').value=$('shareUrl').value=$('htmlOutput').value='';['copyPaypal','copyShare','downloadHtml','copyHtml','openPreview'].forEach(id=>$(id).disabled=true);$('status').textContent='Preview only';renderPreview(readConfig());currentConfig=null;currentHtml='';}
+ $('generateBtn').addEventListener('click',generate);$('resetBtn').addEventListener('click',reset);$('copyPaypal').addEventListener('click',()=>copyText($('paypalUrl').value,$('copyPaypal')));$('copyShare').addEventListener('click',()=>copyText($('shareUrl').value,$('copyShare')));$('copyHtml').addEventListener('click',()=>copyText(currentHtml,$('copyHtml')));$('downloadHtml').addEventListener('click',downloadHtml);$('openPreview').addEventListener('click',()=>{if(currentHtml){const blob=new Blob([currentHtml],{type:'text/html'});const url=URL.createObjectURL(blob);window.open(url,'_blank','noopener');setTimeout(()=>URL.revokeObjectURL(url),60000);}});
+ currencySelect.addEventListener('change',()=>{const digits=amountDigits(currencySelect.value);$('amount').step=digits===0?'1':'0.01';$('amount').placeholder=digits===0?'Whole number only':'0.00';$('currencyHint').textContent=digits===0?currencySelect.value+' is a zero-decimal currency. Enter a whole-number amount. Currency acceptance also depends on your PayPal account country.':(['BRL','CNY','MYR'].includes(currencySelect.value)?currencySelect.value+' is marked in-country only in PayPal’s supported currency reference. Check that your receiving account is eligible.':'Availability depends on the receiving account and its country.');});
+ if(!loadSharedCheckout()){renderPreview(readConfig());}
+})();
+</script>
+</body></html>
