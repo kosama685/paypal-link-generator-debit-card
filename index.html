@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PayPal + Debit/Card Payment Link Generator</title>
+<style>
+  :root{--pp:#003087;--pp2:#009cde;--bg:#f4f6f9;--card:#1a1f36}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:#20242c}
+  header{background:linear-gradient(120deg,#003087,#009cde);color:#fff;padding:26px 20px;text-align:center}
+  header h1{margin:0 0 6px;font-size:22px}
+  header p{margin:0;font-size:14px;opacity:.9}
+  .wrap{max-width:1080px;margin:22px auto;padding:0 16px}
+  .grid{display:grid;grid-template-columns:350px 1fr;gap:18px}
+  @media(max-width:860px){.grid{grid-template-columns:1fr}}
+  .card{background:#fff;border-radius:12px;box-shadow:0 4px 16px rgba(0,0,0,.07);padding:18px}
+  label{display:block;font-size:12px;font-weight:700;margin:12px 0 4px;color:#3a4152}
+  input,textarea,select{width:100%;padding:9px 10px;border:1px solid #d6dbe4;border-radius:8px;font-size:14px}
+  .hint{font-size:12px;color:#667;margin-top:4px}
+  .preview{min-height:300px;display:flex;align-items:center;justify-content:center}
+  .btnrow{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+  button{padding:10px 16px;border:0;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer}
+  .b-main{background:#0070e0;color:#fff}
+  .b-ghost{background:#eef1f6;color:#243044}
+  textarea.out{min-height:280px;font-family:ui-monospace,Consolas,monospace;font-size:12px}
+  .note{background:#fff8e6;border:1px solid #ffe2a8;padding:10px 12px;border-radius:8px;font-size:12.5px;margin-top:12px}
+
+  /* ---------- payment widget ---------- */
+  .pay-option{background:#fff;border-radius:12px;padding:26px 22px;max-width:360px;width:100%;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.07)}
+  .pay-item{margin:0;font-size:14px;color:#556}
+  .pay-price{margin:4px 0 16px;font-size:30px;font-weight:800}
+  .btn-paypal,.btn-card{display:block;width:100%;padding:13px;border-radius:8px;text-decoration:none;font-weight:700;text-align:center;margin-top:8px}
+  .btn-paypal{background:linear-gradient(120deg,#003087,#009cde);color:#fff}
+  .btn-card{background:var(--card);color:#fff}
+  .or{margin:12px 0 2px;font-size:12px;color:#889;text-transform:uppercase;letter-spacing:.06em}
+  .hint2{font-size:12px;color:#667;margin:12px 0 0}
+</style>
+</head>
+<body>
+<header>
+  <h1>PayPal + Debit/Card Payment Link Generator</h1>
+  <p>Generate a PayPal link AND a checkout page that offers both PayPal and card options.</p>
+</header>
+
+<div class="wrap">
+  <div class="grid">
+    <div class="card">
+      <label for="email">PayPal email / Merchant ID</label>
+      <input id="email" placeholder="you@example.com">
+
+      <label for="amount">Amount</label>
+      <input id="amount" type="number" min="0" step="0.01" value="15">
+
+      <label for="currency">Currency</label>
+      <select id="currency">
+        <option>USD</option><option>EUR</option><option>GBP</option>
+        <option>CAD</option><option>AUD</option><option>INR</option>
+      </select>
+
+      <label for="item">Item name</label>
+      <input id="item" value="product name">
+
+      <label for="note">Note (optional)</label>
+      <input id="note" placeholder="e.g. Invoice #123">
+
+      <label for="stripe">Stripe Payment Link (optional, for standalone card payments)</label>
+      <input id="stripe" placeholder="https://buy.stripe.com/...">
+      <div class="hint">Leave empty → the card button opens PayPal checkout, where buyers can choose "Pay with Debit or Credit Card".</div>
+
+      <div class="btnrow"><button class="b-main" onclick="generate()">Generate</button></div>
+
+      <div class="note">
+        ⚙️ To let buyers pay by card without a PayPal account, turn on
+        <b>PayPal Account Optional</b> under Account settings → Website payments → Website preferences.
+      </div>
+    </div>
+
+    <div class="card preview"><div id="preview"></div></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <label>Full standalone HTML page (copy or download)</label>
+    <textarea id="out" class="out" readonly></textarea>
+    <div class="btnrow">
+      <button class="b-main" onclick="copyOut()">Copy HTML</button>
+      <button class="b-ghost" onclick="download()">Download .html</button>
+      <button class="b-ghost" onclick="copyWidget()">Copy widget snippet only</button>
+    </div>
+  </div>
+</div>
+
+<script>
+var PAYPAL_BASE = 'https://www.paypal.com/cgi-bin/webscr';
+
+function val(id){ return document.getElementById(id).value.trim(); }
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'"').replace(/'/g,'&#39;'); }
+function num(s){ var n = parseFloat(s); return (isNaN(n) || n < 0) ? null : n; }
+
+function paypalUrl(){
+  var amt = num(val('amount'));
+  if(!val('email') || amt === null) return null;
+  var p = new URLSearchParams();
+  p.set('cmd', '_xclick');
+  p.set('business', val('email'));
+  p.set('currency_code', val('currency'));
+  p.set('amount', amt.toFixed(2));
+  p.set('item_name', val('item') || 'Payment');
+  p.set('no_note', '1');
+  if(val('note')) p.set('note', val('note'));
+  return PAYPAL_BASE + '?' + p.toString();
+}
+
+function cardUrl(pu){
+  return val('stripe') || pu; /* dedicated Stripe hosted page, or PayPal guest checkout */
+}
+
+function widgetInner(u, c){
+  var amt = num(val('amount')).toFixed(2);
+  return '' +
+    '<p class="pay-item">' + esc(val('item') || 'Payment') + '</p>' +
+    '<p class="pay-price">' + esc(val('currency')) + ' ' + amt + '</p>' +
+    '<a class="btn-paypal" href="' + esc(u) + '" target="_blank" rel="noopener">Pay with PayPal</a>' +
+    '<div class="or">or pay with</div>' +
+    '<a class="btn-card" href="' + esc(c) + '" target="_blank" rel="noopener">Debit / Credit Card</a>' +
+    '<p class="hint2">Secure checkout. No PayPal account needed when paying by card.</p>';
+}
+
+function fullHTML(u, c){
+  var title = esc(val('item') || 'Checkout');
+  return '<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta charset="UTF-8">\n' +
+    '<meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
+    '<title>' + title + '</title>\n<style>\n' +
+    'body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#f4f6f9;color:#20242c;display:flex;align-items:center;justify-content:center;min-height:100vh}\n' +
+    '.pay-option{background:#fff;border-radius:12px;padding:26px 22px;max-width:360px;width:100%;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.07)}\n' +
+    '.pay-item{margin:0;font-size:14px;color:#556}\n.pay-price{margin:4px 0 16px;font-size:30px;font-weight:800}\n' +
+    '.btn-paypal,.btn-card{display:block;width:100%;padding:13px;border-radius:8px;text-decoration:none;font-weight:700;text-align:center;margin-top:8px}\n' +
+    '.btn-paypal{background:linear-gradient(120deg,#003087,#009cde);color:#fff}\n.btn-card{background:#1a1f36;color:#fff}\n' +
+    '.or{margin:12px 0 2px;font-size:12px;color:#889;text-transform:uppercase;letter-spacing:.06em}\n.hint2{font-size:12px;color:#667;margin:12px 0 0}\n' +
+    '</style>\n</head>\n<body>\n<main class="pay-option">\n' + widgetInner(u, c) + '\n</main>\n</body>\n</html>';
+}
+
+function generate(){
+  var u = paypalUrl();
+  if(!u){
+    document.getElementById('preview').innerHTML =
+      '<p style="color:#b00;font-weight:700">Please enter a valid PayPal email and amount.</p>';
+    document.getElementById('out').value = '';
+    return;
+  }
+  var c = cardUrl(u);
+  document.getElementById('preview').innerHTML = '<div class="pay-option">' + widgetInner(u, c) + '</div>';
+  document.getElementById('out').value = fullHTML(u, c);
+}
+
+function copyOut(){ var t = document.getElementById('out'); t.select(); document.execCommand('copy'); flash('HTML copied'); }
+function copyWidget(){
+  var snippet = '<div class="pay-option">\n' + widgetInner(paypalUrl(), cardUrl(paypalUrl())) + '\n</div>';
+  navigator.clipboard.writeText(snippet).then(function(){ flash('Widget copied'); });
+}
+function download(){
+  var blob = new Blob([document.getElementById('out').value], {type:'text/html'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'paypal-checkout.html';
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function flash(msg){
+  var b = document.createElement('div');
+  b.textContent = msg;
+  b.style.cssText = 'position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#0f8a4d;color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;font-weight:700;z-index:99';
+  document.body.appendChild(b);
+  setTimeout(function(){ b.remove(); }, 1800);
+}
+
+generate(); // preview a default $15 link on load
+</script>
+</body>
+</html>
