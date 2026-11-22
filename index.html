@@ -1,467 +1,297 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PayPal + Card + Apple Pay + Google Pay Generator</title>
-  <style>
-    :root{
-      --blue:#003087; --sky:#009cde; --dark:#101828;
-      --muted:#667085; --line:#d0d5dd; --bg:#f2f4f7;
-      --ok:#067647; --warn:#b54708;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--dark)}
-    a{color:inherit}
-    .top{background:linear-gradient(115deg,var(--blue),var(--sky));color:white;padding:28px 20px;text-align:center}
-    .top h1{margin:0 0 8px;font-size:clamp(20px,4vw,34px)}
-    .top p{margin:0;opacity:.92}
-    .shell{max-width:1180px;margin:24px auto 48px;padding:0 16px}
-    .grid{display:grid;grid-template-columns:minmax(300px,430px) 1fr;gap:20px;align-items:start}
-    @media(max-width:900px){.grid{grid-template-columns:1fr}}
-    .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 2px 8px rgba(16,24,40,.06)}
-    label{display:block;font-size:12px;font-weight:700;margin:14px 0 5px}
-    input,textarea,select{width:100%;border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit;font-size:14px;background:#fff}
-    input:focus,textarea:focus,select:focus{outline:2px solid #98a2ff;outline-offset:0;border-color:#747cff}
-    textarea{min-height:150px;resize:vertical;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:12px;line-height:1.5}
-    .small{font-size:12px;color:var(--muted);margin-top:4px;line-height:1.45}
-    .alert{font-size:12.5px;line-height:1.5;padding:10px 12px;border-radius:8px;margin-top:14px}
-    .alert.warn{background:#fffaeb;border:1px solid #f79009;color:#7a2e0e}
-    .alert.ok{background:#ecfdf3;border:1px solid #6ce9a6;color:#027a48}
-    .method{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:11px;margin-top:10px}
-    .method strong{display:block;font-size:14px}
-    .method span{font-size:12px;color:var(--muted)}
-    .switch{margin-left:auto}
-    .btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
-    button{border:0;border-radius:8px;padding:11px 14px;font:700 14px/1 Arial;cursor:pointer;background:#e4e7ec;color:var(--dark)}
-    button.primary{background:#0070e0;color:#fff}
-    button:hover{filter:brightness(.96)}
-    .preview-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    .badge{font-size:12px;font-weight:700;color:#175cd3;background:#eff8ff;border:1px solid #b2ddff;border-radius:999px;padding:5px 9px}
-    .preview{min-height:460px;display:grid;place-items:center;background:repeating-linear-gradient(45deg,#fcfcfd,#fcfcfd 12px,#f8f9fc 12px,#f8f9fc 24px)}
-    .sharebox{display:flex;gap:8px;margin-top:10px}
-    .sharebox input{text-align:left}
-    /* Generated client checkout UI */
-    .checkout{width:min(400px,100%);background:#fff;border-radius:16px;padding:24px;box-shadow:0 8px 28px rgba(16,24,40,.12);text-align:center}
-    .checkout img{width:88px;height:28px;object-fit:contain}
-    .item{font-size:13px;color:var(--muted);margin:14px 0 2px}
-    .price{font-size:32px;font-weight:800;margin:0 0 18px}
-    .paybtn{display:block;width:100%;border-radius:10px;padding:12px;margin-top:9px;text-decoration:none;font-weight:700;text-align:center;color:#fff;background:var(--dark)}
-    .paypal{background:linear-gradient(100deg,var(--blue),var(--sky))}
-    .card{background:#17181f}
-    .apple{background:#000}
-    .google{background:#fff;color:#111!important;border:1px solid #cfd3da}
-    .divider{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#98a2b3;margin:15px 0 3px}
-    .secure{font-size:11.5px;color:var(--muted);margin-top:14px}
-    .tos{font-size:10.5px;color:#98a2b3;margin-top:10px}
-    .error{color:#b42318;font-size:13px;font-weight:700}
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PayPal Payment Link Generator — All Countries & Currencies</title>
+<style>
+:root{--bg:#0b1020;--card:#141b30;--line:#26304d;--tx:#e8ecf8;--mu:#8b97b8;--bl:#0070e0;--sky:#009cde;--er:#f87171}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,Segoe UI,Arial,sans-serif}
+.hide{display:none!important}
+header{padding:26px 16px;text-align:center;background:linear-gradient(115deg,#003087,#009cde)}
+header h1{margin:0;font-size:clamp(20px,4vw,30px)}header p{margin:6px 0 0;opacity:.9;font-size:14px}
+.wrap{max-width:1120px;margin:22px auto;padding:0 14px;display:grid;grid-template-columns:minmax(300px,430px) 1fr;gap:18px}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}}
+.p{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+label.l{display:block;font-size:12px;font-weight:700;color:var(--mu);margin:13px 0 5px;text-transform:uppercase;letter-spacing:.04em}
+input,select,textarea{width:100%;background:#0d1326;color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:10px;font:inherit}
+input:focus,select:focus{outline:2px solid var(--sky);border-color:transparent}
+textarea{min-height:120px;font:12px/1.4 ui-monospace,Consolas,monospace;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{display:flex;gap:10px;align-items:center;border:1px solid var(--line);border-radius:10px;padding:10px;margin-top:8px;cursor:pointer}
+.opt input{width:auto}.opt b{display:block;font-size:14px}.opt small{color:var(--mu)}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+button{border:0;border-radius:8px;padding:11px 14px;font:700 14px system-ui;cursor:pointer;background:#25304f;color:var(--tx)}
+button.pr{background:var(--bl);color:#fff}button:hover{filter:brightness(1.12)}
+.note{font-size:12.5px;border-radius:8px;padding:10px 12px;margin-top:14px;line-height:1.5}
+.warn{background:#2a2110;border:1px solid #8a6516;color:#fcd98a}.info{background:#0f2a22;border:1px solid #1f6f55;color:#9be7c9}.blue{background:#0f1f3a;border:1px solid #1f4f9a;color:#a9c8ff}
+.err{color:var(--er);font-weight:700;font-size:13px;margin-top:10px}
+.share{display:flex;gap:8px;margin-top:10px}
+.prev{display:grid;place-items:center;min-height:430px;margin-top:10px;border-radius:12px;background:repeating-linear-gradient(45deg,#0d1326,#0d1326 12px,#10172d 12px,#10172d 24px)}
+#clientView{min-height:100vh;display:grid;place-items:center;padding:20px}
+/*CO*/
+.co{width:min(400px,100%);background:#fff;color:#101828;border-radius:18px;padding:26px;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.35);font:15px system-ui,Arial,sans-serif}
+.co img{height:30px}.co .it{font-size:14px;color:#667085;margin:14px 0 2px}.co .pc{font-size:32px;font-weight:800;margin:0 0 4px}
+.co .cv{font-size:13px;color:#475467;margin:0 0 14px}
+.pb{display:block;width:100%;padding:13px;margin-top:9px;border-radius:10px;text-decoration:none;font-weight:700;color:#fff;background:#17181f;cursor:pointer;border:0;font-size:15px}
+.pb.pp{background:linear-gradient(100deg,#003087,#009cde)}.pb.ap{background:#000}.pb.gp{background:#fff;color:#111;border:1px solid #cfd3da}
+.dv{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#98a2b3;margin:14px 0 2px}
+.fn{font-size:11.5px;color:#667085;margin-top:14px;line-height:1.5}
+/*END*/
+</style>
 </head>
 <body>
-<header class="top">
-  <h1>Payment Link & Checkout Generator</h1>
-  <p>PayPal • Debit / Credit Card guest checkout • Apple Pay • Google Pay</p>
-</header>
 
-<main class="shell">
-  <div class="grid">
-    <section class="panel" aria-label="Payment settings">
-      <label for="email">PayPal business email or Merchant ID</label>
-      <input id="email" value="osamakhancv@gmail.com" autocomplete="off" />
+<div id="clientView" class="hide"><div class="co" id="clientCo"></div></div>
 
-      <label for="item">Product / invoice description</label>
-      <input id="item" value="product name" />
-
-      <label for="amount">Amount</label>
-      <input id="amount" type="number" min="0" step="0.01" value="15" />
-
-      <label for="currency">Currency</label>
-      <select id="currency"></select>
-      <div class="small">PayPal uses <b>PayPal Payments Standard</b>; a fixed <code>currency_code</code> must match the currency supported by the receiving PayPal account.</div>
-
-      <label for="invoice">Invoice / order ID (optional)</label>
-      <input id="invoice" placeholder="INV-1001" />
-
-      <label for="returnUrl">Return URL after payment (optional)</label>
-      <input id="returnUrl" placeholder="https://yourdomain.com/thank-you" />
-
-      <label for="cancelUrl">Cancel URL (optional)</label>
-      <input id="cancelUrl" placeholder="https://yourdomain.com/cancel" />
-
-      <div style="margin-top:16px">
-        <label style="margin-top:0">Methods shown to client</label>
-
-        <label class="method">
-          <input type="checkbox" id="mPaypal" checked class="switch" />
-          <span><strong>PayPal account</strong><span>Standard Buy Now / checkout</span></span>
-        </label>
-
-        <label class="method">
-          <input type="checkbox" id="mCard" checked class="switch" />
-          <span><strong>Debit / Credit Card</strong><span>PayPal-hosted guest card form</span></span>
-        </label>
-
-        <label class="method">
-          <input type="checkbox" id="mApple" checked class="switch" />
-          <span><strong>Apple Pay</strong><span>Where buyer and PayPal eligibility allow</span></span>
-        </label>
-
-        <label class="method">
-          <input type="checkbox" id="mGoogle" checked class="switch" />
-          <span><strong>Google Pay</strong><span>Where buyer and PayPal eligibility allow</span></span>
-        </label>
-      </div>
-
-      <div id="linkError" class="error" style="display:none;margin-top:14px"></div>
-
-      <div class="btns">
-        <button class="primary" id="gen">Generate</button>
-        <button id="copyLink">Copy share link</button>
-        <button id="copyHtml">Copy complete HTML</button>
-        <button id="download">Download HTML</button>
-      </div>
-
-      <div class="sharebox">
-        <input id="shareLink" readonly aria-label="Shareable payment link" />
-        <button id="copyShare">Copy</button>
-      </div>
-
-      <div class="alert warn">
-        <b>Required:</b> Turn on <b>PayPal Account Optional</b> in PayPal →
-        <b>Account Settings → Website payments → Website preferences</b>.
-        Card processing, Apple Pay and Google Pay run inside PayPal’s hosted
-        secure checkout. This page intentionally never asks for raw card numbers.
-      </div>
-
-      <div class="alert ok">
-        Clicking the generated <b>Debit / Credit Card</b> button opens PayPal’s
-        secure checkout. The buyer sees the card details form when guest checkout
-        is available for that transaction. No card data touches your website.
-      </div>
-    </section>
-
-    <section class="panel">
-      <div class="preview-toolbar">
-        <div>
-          <b>Live preview</b>
-          <div class="small">This is what the client sees before selecting a method.</div>
-        </div>
-        <span class="badge" id="status">Ready</span>
-      </div>
-
-      <div class="preview">
-        <article class="checkout" id="checkout"></article>
-      </div>
-
-      <label style="margin-top:18px">Complete standalone HTML page</label>
-      <textarea id="output" readonly spellcheck="false"></textarea>
-      <div class="small">Copy it, save it as <b>payment.html</b>, upload it to any website host, and share its public address. It does not collect or send card numbers to you.</div>
-    </section>
+<div id="genView">
+<header><h1>PayPal Payment Link Generator</h1><p>Every country • every world currency • PayPal • Card • Apple Pay • Google Pay</p></header>
+<div class="wrap">
+ <section class="p">
+  <label class="l" for="email">Your PayPal email (receives the money)</label>
+  <input id="email" type="email" value="osamakhancv@gmail.com" autocomplete="off">
+  <label class="l" for="item">Product / description</label>
+  <input id="item" value="product name">
+  <div class="two">
+   <div><label class="l" for="country">Client country</label><select id="country"></select></div>
+   <div><label class="l" for="cur">Price currency</label><select id="cur"></select></div>
   </div>
-</main>
+  <label class="l" for="amount">Price (in the currency above)</label>
+  <input id="amount" type="number" min="0.01" step="any" value="15">
+
+  <div id="convBox" class="hide">
+   <div class="note blue" id="convMsg"></div>
+   <div class="two">
+    <div><label class="l" for="settle">PayPal charges in</label><select id="settle"></select></div>
+    <div><label class="l" for="rate" id="rateLbl">Rate</label><input id="rate" type="number" step="any" min="0"></div>
+   </div>
+   <div class="row" style="margin-top:8px"><button id="refresh" type="button">↻ Refresh live rate</button></div>
+  </div>
+
+  <label class="l" for="inv">Invoice / order ID (optional)</label>
+  <input id="inv" placeholder="INV-1001">
+  <label class="l" for="ret">Return URL after payment (optional)</label>
+  <input id="ret" placeholder="https://yourdomain.com/thank-you">
+  <label class="l" for="can">Cancel URL (optional)</label>
+  <input id="can" placeholder="https://yourdomain.com/cancel">
+  <label class="l">Buttons shown to client</label>
+  <label class="opt"><input type="checkbox" id="mP" checked><span><b>PayPal account</b><small>Log in and pay</small></span></label>
+  <label class="opt"><input type="checkbox" id="mC" checked><span><b>Debit / Credit Card</b><small>Opens PayPal's card form directly (guest)</small></span></label>
+  <label class="opt"><input type="checkbox" id="mA" checked><span><b>Apple Pay</b><small>Shown on Apple devices; completes inside PayPal if eligible</small></span></label>
+  <label class="opt"><input type="checkbox" id="mG" checked><span><b>Google Pay</b><small>Shown on Android/Chrome; completes inside PayPal if eligible</small></span></label>
+  <div id="e" class="err hide"></div>
+  <div class="row">
+   <button class="pr" id="gen">Generate</button>
+   <button id="cl">Copy link</button>
+   <button id="ch">Copy client HTML</button>
+   <button id="dl">Download client HTML</button>
+   <button id="op">Open checkout</button>
+  </div>
+  <div class="note warn"><b>Turn on once:</b> PayPal → Settings → Payments → Website payments → Website preferences → <b>PayPal Account Optional = On</b>. Otherwise the card button may still ask for a PayPal login.</div>
+  <div class="note info">Card numbers are typed only on PayPal's own secure page — never here.</div>
+ </section>
+ <section class="p">
+  <b>Live preview</b>
+  <div class="prev"><div class="co" id="prevCo"></div></div>
+  <label class="l">Share link</label>
+  <div class="share"><input id="share" readonly><button id="cs">Copy</button></div>
+  <div class="note warn">Upload this HTML file to <b>https hosting</b> (GitHub Pages, Netlify, Vercel, your site) and generate links from the hosted copy — a link made from a local file only works on your device.</div>
+  <label class="l">Standalone client page (HTML)</label>
+  <textarea id="out" readonly spellcheck="false"></textarea>
+ </section>
+</div>
+</div>
 
 <script>
 (function(){
-  "use strict";
+"use strict";
 
-  // PayPal Payments Standard currencies.
-  var currencies = [
-    ["USD","US Dollar"], ["AUD","Australian Dollar"], ["BRL","Brazilian Real"],
-    ["CAD","Canadian Dollar"], ["CHF","Swiss Franc"], ["CZK","Czech Koruna"],
-    ["DKK","Danish Krone"], ["EUR","Euro"], ["GBP","British Pound"],
-    ["HKD","Hong Kong Dollar"], ["HUF","Hungarian Forint"], ["ILS","Israeli Shekel"],
-    ["INR","Indian Rupee"], ["JPY","Japanese Yen"], ["MXN","Mexican Peso"],
-    ["MYR","Malaysian Ringgit"], ["NOK","Norwegian Krone"], ["NZD","New Zealand Dollar"],
-    ["PHP","Philippine Peso"], ["PLN","Polish Zloty"], ["RUB","Russian Ruble"],
-    ["SEK","Swedish Krona"], ["SGD","Singapore Dollar"], ["THB","Thai Baht"],
-    ["TWD","Taiwan New Dollar"], ["ZAR","South African Rand"]
-  ];
-
-  var currencySelect = document.getElementById("currency");
-  currencies.forEach(function(c){
-    var o = document.createElement("option");
-    o.value = c[0];
-    o.textContent = c[0] + " — " + c[1];
-    if(c[0] === "USD") o.selected = true;
-    currencySelect.appendChild(o);
+/* ---------- shared core: used here AND embedded in downloaded client pages ---------- */
+function core(){
+ var ZERO={JPY:1,HUF:1,TWD:1};
+ function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+ function money(a,c){try{return new Intl.NumberFormat("en",{style:"currency",currency:c,currencyDisplay:"code"}).format(a)}catch(e){return c+" "+a}}
+ function fmtS(a,c){return Number(a).toFixed(ZERO[c]?0:2)}
+ function ppUrl(c,card){
+  var p=new URLSearchParams();
+  p.set("cmd","_xclick");p.set("business",c.e);p.set("currency_code",c.s);
+  p.set("amount",fmtS(c.t,c.s));p.set("item_name",c.i||"Payment");
+  p.set("no_note","1");p.set("no_shipping","1");p.set("charset","utf-8");
+  if(c.v)p.set("invoice",c.v);
+  if(c.r){p.set("return",c.r);p.set("rm","1")}
+  if(c.x)p.set("cancel_return",c.x);
+  if(card){p.set("landing_page","Billing");p.set("solution_type","Sole")}
+  return "https://www.paypal.com/cgi-bin/webscr?"+p.toString();
+ }
+ var ua=navigator.userAgent;
+ var isApple=!!window.ApplePaySession||(/iPhone|iPad|Macintosh/.test(ua)&&/Safari/.test(ua)&&!/Chrome|CriOS|Android/.test(ua));
+ var isGoogle=/Android|Chrome|CriOS/.test(ua);
+ function buttons(c,preview){
+  var h="",w="";
+  if(c.m.p)h+='<a class="pb pp" data-k="p" href="#">Pay with PayPal</a>';
+  if(c.m.c)h+='<div class="dv">or pay by card</div><a class="pb" data-k="c" href="#">\uD83D\uDCB3 Debit / Credit Card</a>';
+  if(c.m.a&&(preview||isApple))w+='<a class="pb ap" data-k="a" href="#">\uF8FF Pay</a>';
+  if(c.m.g&&(preview||isGoogle))w+='<a class="pb gp" data-k="g" href="#"><b style="color:#4285f4">G</b> Pay</a>';
+  if(w)h+='<div class="dv">express wallets</div>'+w;
+  var conv=c.d!==c.s?'<div class="cv">You will be charged <b>'+esc(money(fmtS(c.t,c.s),c.s))+'</b> by PayPal<br>(1 '+esc(c.s)+' = '+esc(Number(c.k).toPrecision(6))+' '+esc(c.d)+')</div>':'<div class="cv"></div>';
+  return '<img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-200px.png" alt="PayPal">'+
+   '<div class="it">'+esc(c.i||"Payment")+'</div><div class="pc">'+esc(money(c.a,c.d))+'</div>'+conv+h+
+   '<div class="fn"><b>Secure PayPal checkout.</b> Card details are entered on PayPal\'s page only.'+(c.v?'<br>Invoice: '+esc(c.v):'')+'</div>';
+ }
+ function wire(root,c){
+  root.querySelectorAll("[data-k]").forEach(function(a){
+   a.addEventListener("click",function(e){e.preventDefault();location.href=ppUrl(c,a.getAttribute("data-k")==="c")});
   });
+ }
+ return {ZERO:ZERO,esc:esc,money:money,fmtS:fmtS,ppUrl:ppUrl,buttons:buttons,wire:wire};
+}
+var K=core();
 
-  function id(name){ return document.getElementById(name); }
-  function text(name){ return id(name).value.trim(); }
-  function checked(name){ return id(name).checked; }
-  function html(s){ return String(s).replace(/[&<>"']/g, function(ch){
-    return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':""","'":"&#39;"}[ch];
-  }); }
-  function decode(s){ return String(s).replace(/&#39;|"|&lt;|&gt;|&amp;/gi, function(ch){
-    return {"&amp;":"&","&lt;":"<","&gt;":">",""":'"',"&#39;":"'"}[ch.toLowerCase()] || ch;
-  }); }
+/* ---------- data ---------- */
+// Currencies PayPal can actually settle (Payments Standard)
+var PP="USD EUR GBP AUD BRL CAD CNY CZK DKK HKD HUF ILS JPY MYR MXN TWD NZD NOK PHP PLN RUB SGD SEK CHF THB".split(" ");
+var CMAP="AF AFN AL ALL DZ DZD AD EUR AO AOA AG XCD AR ARS AM AMD AU AUD AT EUR AZ AZN BS BSD BH BHD BD BDT BB BBD BY BYN BE EUR BZ BZD BJ XOF BT BTN BO BOB BA BAM BW BWP BR BRL BN BND BG BGN BF XOF BI BIF KH KHR CM XAF CA CAD CV CVE CF XAF TD XAF CL CLP CN CNY CO COP KM KMF CG XAF CD CDF CR CRC CI XOF HR EUR CU CUP CY EUR CZ CZK DK DKK DJ DJF DM XCD DO DOP EC USD EG EGP SV USD GQ XAF ER ERN EE EUR SZ SZL ET ETB FJ FJD FI EUR FR EUR GA XAF GM GMD GE GEL DE EUR GH GHS GR EUR GD XCD GT GTQ GN GNF GW XOF GY GYD HT HTG HN HNL HK HKD HU HUF IS ISK IN INR ID IDR IR IRR IQ IQD IE EUR IL ILS IT EUR JM JMD JP JPY JO JOD KZ KZT KE KES KI AUD KW KWD KG KGS LA LAK LV EUR LB LBP LS LSL LR LRD LY LYD LI CHF LT EUR LU EUR MO MOP MG MGA MW MWK MY MYR MV MVR ML XOF MT EUR MH USD MR MRU MU MUR MX MXN FM USD MD MDL MC EUR MN MNT ME EUR MA MAD MZ MZN MM MMK NA NAD NR AUD NP NPR NL EUR NZ NZD NI NIO NE XOF NG NGN KP KPW MK MKD NO NOK OM OMR PK PKR PW USD PS ILS PA PAB PG PGK PY PYG PE PEN PH PHP PL PLN PT EUR QA QAR RO RON RU RUB RW RWF KN XCD LC XCD VC XCD WS WST SM EUR ST STN SA SAR SN XOF RS RSD SC SCR SL SLE SG SGD SK EUR SI EUR SB SBD SO SOS ZA ZAR KR KRW SS SSP ES EUR LK LKR SD SDG SR SRD SE SEK CH CHF SY SYP TW TWD TJ TJS TZ TZS TH THB TL USD TG XOF TO TOP TT TTD TN TND TR TRY TM TMT TV AUD UG UGX UA UAH AE AED GB GBP US USD UY UYU UZ UZS VU VUV VA EUR VE VES VN VND YE YER ZM ZMW ZW USD".split(" ");
+var C2={},ALL={};
+for(var i=0;i<CMAP.length;i+=2){C2[CMAP[i]]=CMAP[i+1];ALL[CMAP[i+1]]=1}
+PP.forEach(function(x){ALL[x]=1});
+try{(Intl.supportedValuesOf("currency")||[]).forEach(function(x){ALL[x]=1})}catch(e){}
+// Pegged currencies per 1 USD — offline fallback only
+var PEG={USD:1,SAR:3.75,AED:3.6725,QAR:3.64,BHD:0.376,OMR:0.3845,JOD:0.709};
 
-  function validAmount(){
-    var v = Number(text("amount"));
-    return Number.isFinite(v) && v >= 0 ? v.toFixed(2) : "";
-  }
+var $=function(i){return document.getElementById(i)};
+var rn,cn;
+try{rn=new Intl.DisplayNames(["en"],{type:"region"});cn=new Intl.DisplayNames(["en"],{type:"currency"})}catch(e){}
+function cname(c){try{return cn?cn.of(c):c}catch(e){return c}}
+function opt(sel,v,t){var o=document.createElement("option");o.value=v;o.textContent=t;sel.appendChild(o)}
 
-  // Build the legacy PayPal Payments Standard URL.
-  function paypalUrl(target){
-    var email = text("email"), amount = validAmount(), currency = currencySelect.value;
-    if(!email || !amount) return "";
+var cs=$("country"),cu=$("cur"),se=$("settle");
+Object.keys(C2).map(function(k){var n;try{n=rn?rn.of(k):k}catch(e){n=k}return[k,n||k]}).sort(function(a,b){return a[1].localeCompare(b[1])}).forEach(function(x){opt(cs,x[0],x[1]+" ("+C2[x[0]]+")")});
+Object.keys(ALL).sort().forEach(function(c){opt(cu,c,c+" — "+cname(c))});
+PP.slice().sort().forEach(function(c){opt(se,c,c+" — "+cname(c))});
+cs.value="SA";cu.value="USD";se.value="USD";
 
-    var p = new URLSearchParams();
-    p.set("cmd", "_xclick");
-    p.set("business", email);
-    p.set("currency_code", currency);
-    p.set("amount", amount);
-    p.set("item_name", text("item") || "Payment");
-    p.set("no_note", "1");
+/* ---------- helpers ---------- */
+function b64e(o){var b=new TextEncoder().encode(JSON.stringify(o)),s="";b.forEach(function(x){s+=String.fromCharCode(x)});return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}
+function b64d(t){t=t.replace(/-/g,"+").replace(/_/g,"/");while(t.length%4)t+="=";var s=atob(t),a=new Uint8Array(s.length);for(var i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return JSON.parse(new TextDecoder().decode(a))}
+function okUrl(u){return !u||/^https?:\/\/\S+$/i.test(u)}
+function needConv(){return PP.indexOf(cu.value)<0}
 
-    if(text("invoice")) p.set("invoice", text("invoice"));
-    if(target) p.set("custom", target);
+/* ---------- exchange rate ---------- */
+var manual=false,rateReq=0;
+function setRateLabel(){$("rateLbl").textContent="Rate: 1 "+se.value+" = ? "+cu.value}
+function fallbackRate(d,s){return(PEG[d]&&PEG[s])?PEG[d]/PEG[s]:0}
+function loadRate(){
+ if(!needConv())return;
+ setRateLabel();
+ var d=cu.value,s=se.value,id=++rateReq;
+ $("convMsg").textContent="Fetching live rate…";
+ fetch("https://open.er-api.com/v6/latest/"+s).then(function(r){return r.json()}).then(function(j){
+  if(id!==rateReq)return;
+  var v=j&&j.rates&&j.rates[d];
+  if(!v)throw 0;
+  $("rate").value=Number(v).toPrecision(8);manual=false;
+  $("convMsg").textContent=d+" isn't a PayPal currency, so PayPal will charge in "+s+". Live rate loaded (you can edit it). The rate is locked into the link when you generate.";
+  gen(true);
+ }).catch(function(){
+  if(id!==rateReq)return;
+  var f=fallbackRate(d,s);
+  if(f){$("rate").value=f}
+  $("convMsg").textContent=f?"Live rate unavailable (offline?). Using the fixed peg rate — you can edit it.":"Live rate unavailable. Enter the rate manually (1 "+s+" = ? "+d+").";
+  gen(true);
+ });
+}
+function onCountry(){
+ var c=C2[cs.value];
+ if(c){cu.value=c;onCur()}
+}
+function onCur(){
+ $("convBox").classList.toggle("hide",!needConv());
+ if(needConv()){manual=false;loadRate()}else gen(true);
+}
+cs.addEventListener("change",onCountry);
+cu.addEventListener("change",onCur);
+se.addEventListener("change",function(){manual=false;loadRate()});
+$("rate").addEventListener("input",function(){manual=true;gen(true)});
+$("refresh").addEventListener("click",function(){manual=false;loadRate()});
 
-    // These are valid for hosted button / standard checkout flows.
-    if(text("returnUrl")) p.set("return", text("returnUrl"));
-    if(text("cancelUrl")) p.set("cancel_return", text("cancelUrl"));
+/* ---------- build config ---------- */
+function build(){
+ var c={e:$("email").value.trim(),i:$("item").value.trim(),d:cu.value,a:$("amount").value.trim(),
+  v:$("inv").value.trim(),r:$("ret").value.trim(),x:$("can").value.trim(),
+  m:{p:$("mP").checked,c:$("mC").checked,a:$("mA").checked,g:$("mG").checked}};
+ var a=Number(c.a);
+ if(needConv()){
+  c.s=se.value;c.k=Number($("rate").value);
+  c.t=(isFinite(a)&&c.k>0)?(a/c.k):0;
+ }else{c.s=c.d;c.k=1;c.t=a}
+ c.t=isFinite(c.t)&&c.t>0?Number(c.t.toFixed(K.ZERO[c.s]?0:2)):0;
+ return c;
+}
+function check(c){
+ if(!/^\S+@\S+\.\S+$/.test(c.e)&&!/^[A-Z0-9]{13}$/.test(c.e))return "Enter a valid PayPal email or Merchant ID.";
+ if(!(Number(c.a)>0)||!isFinite(Number(c.a)))return "Enter a price greater than 0.";
+ if(PP.indexOf(c.s)<0)return "Invalid settlement currency.";
+ if(!(c.k>0))return "Exchange rate missing — enter it manually.";
+ if(!(c.t>0))return "Converted amount rounds to 0 — raise the price.";
+ if(!okUrl(c.r)||!okUrl(c.x))return "Return/Cancel URLs must start with http:// or https://";
+ if(!(c.m.p||c.m.c||c.m.a||c.m.g))return "Select at least one payment button.";
+ return "";
+}
 
-    return "https://www.paypal.com/cgi-bin/webscr?" + p.toString();
-  }
+/* ---------- standalone client page ---------- */
+function clientPage(c){
+ var css=document.querySelector("style").textContent;
+ css=css.slice(css.indexOf("/*CO*/"),css.indexOf("/*END*/"));
+ var data=JSON.stringify(c).replace(/</g,"\\u003c");
+ return '<!DOCTYPE html>\n<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+K.esc(c.i||"Payment")+' | Secure checkout</title>\n<style>body{margin:0;min-height:100vh;display:grid;place-items:center;padding:20px;background:#0b1020}\n'+css+'</style></head>\n<body><div class="co" id="co"></div>\n<script>\n(function(){var K=('+core.toString()+')();var c='+data+';var r=document.getElementById("co");r.innerHTML=K.buttons(c,false);K.wire(r,c);})();\n<\/script>\n</body></html>';
+}
 
-  // Standalone page maker: all data is embedded, buttons open the secure PayPal flow.
-  function standaloneHTML(cfg){
-    var title = html(cfg.item || "Secure payment"),
-        email = html(cfg.email),
-        amount = html(cfg.amount),
-        currency = html(cfg.currency),
-        pp = html(cfg.paypal),
-        card = html(cfg.card),
-        inv = html(cfg.invoice || ""),
-        back = html(cfg.returnUrl || ""),
-        cancel = html(cfg.cancelUrl || "");
+/* ---------- actions ---------- */
+var last=null;
+function gen(quiet){
+ var c=build(),m=check(c),er=$("e");
+ if(m){
+  if(!quiet||!$("e").classList.contains("hide")||true){er.textContent=m;er.classList.toggle("hide",!m)}
+  return false;
+ }
+ er.classList.add("hide");last=c;
+ $("prevCo").innerHTML=K.buttons(c,true);K.wire($("prevCo"),c);
+ $("share").value=location.href.split("#")[0]+"#p="+b64e(c);
+ $("out").value=clientPage(c);
+ return true;
+}
+function copy(v,btn,msg){
+ if(!v)return;
+ function done(){var o=btn.textContent;btn.textContent=msg||"Copied!";setTimeout(function(){btn.textContent=o},1200)}
+ function fb(){var t=document.createElement("textarea");t.value=v;document.body.appendChild(t);t.select();document.execCommand("copy");t.remove();done()}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(v).then(done,fb)}else fb();
+}
+$("gen").onclick=function(){gen()};
+$("cl").onclick=function(){if(gen())copy($("share").value,this)};
+$("cs").onclick=function(){copy($("share").value,this)};
+$("ch").onclick=function(){if(gen())copy($("out").value,this,"HTML copied")};
+$("dl").onclick=function(){
+ if(!gen())return;
+ var a=document.createElement("a");
+ a.href=URL.createObjectURL(new Blob([$("out").value],{type:"text/html;charset=utf-8"}));
+ a.download="pay-"+last.d+"-"+last.a+".html";a.click();
+ setTimeout(function(){URL.revokeObjectURL(a.href)},1500);
+};
+$("op").onclick=function(){if(gen())window.open(K.ppUrl(last,false),"_blank","noopener")};
+["email","item","amount","inv","ret","can","mP","mC","mA","mG"].forEach(function(i){$(i).addEventListener("input",function(){gen(true)});$(i).addEventListener("change",function(){gen(true)})});
 
-    return '<!DOCTYPE html>\n' +
-'<html lang="en">\n<head>\n' +
-'  <meta charset="UTF-8">\n' +
-'  <meta name="viewport" content="width=device-width, initial-scale=1.0">\n' +
-'  <title>' + title + ' | Secure checkout</title>\n' +
-'  <style>\n' +
-'    :root{--blue:#003087;--sky:#009cde;--ink:#101828;--muted:#667085}\n' +
-'    *{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;padding:24px;background:#f2f4f7;font-family:Arial,Helvetica,sans-serif;color:var(--ink)}\n' +
-'    .box{width:min(410px,100%);background:#fff;border-radius:16px;padding:26px;box-shadow:0 10px 30px rgba(16,24,40,.12);text-align:center}\n' +
-'    .paypal{width:108px}.item{font-size:14px;color:var(--muted);margin:15px 0 4px}.price{font-size:34px;font-weight:800;margin:0 0 18px}\n' +
-'    .btn{display:block;width:100%;padding:12px;margin-top:9px;border-radius:10px;text-decoration:none;text-align:center;font-weight:700;color:#fff;background:#17181f;border:0;cursor:pointer}\n' +
-'    .pp{background:linear-gradient(100deg,var(--blue),var(--sky))}.card{background:#17181f}.apple{background:#000}.google{background:#fff;color:#111;border:1px solid #cfd3da}\n' +
-'    .break{font-size:11px;text-transform:uppercase;letter-spacing:.09em;color:#98a2b3;margin:16px 0 3px}.fine{font-size:11.5px;color:var(--muted);line-height:1.5;margin-top:14px}\n' +
-'    .err{color:#b42318;font-weight:700;font-size:14px}\n' +
-'  </style>\n</head>\n<body>\n' +
-'  <main class="box">\n' +
-'    <img class="paypal" src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-200px.png" alt="PayPal">\n' +
-'    <div class="item">' + title + '</div>\n' +
-'    <div class="price">' + currency + ' ' + amount + '</div>\n' +
-'    <div id="err" class="err" hidden>Please complete the payment details and generate the public checkout page.</div>\n' +
-'    <a id="payPal" class="btn pp" rel="noopener">Pay with PayPal</a>\n' +
-'    <div class="break">or pay by card</div>\n' +
-'    <a id="cardPay" class="btn card" rel="noopener">Debit / Credit Card</a>\n' +
-'    <div class="break">available on supported devices</div>\n' +
-'    <a id="applePay" class="btn apple" rel="noopener"> Pay with Apple&nbsp;Pay</a>\n' +
-'    <a id="googlePay" class="btn google" rel="noopener">G Pay with Google</a>\n' +
-'    <div class="fine"><b>Secure PayPal checkout.</b> Card fields and wallet payment are hosted by PayPal. Do not send card numbers by email, chat, or to this page.</div>\n' +
-'  </main>\n' +
-'  <script>\n' +
-'    (function(){\n' +
-'      var pp=' + JSON.stringify(pp) + ', card=' + JSON.stringify(card) + ';\n' +
-'      var inv=' + JSON.stringify(inv) + ', back=' + JSON.stringify(back) + ', cancel=' + JSON.stringify(cancel) + ';\n' +
-'      function q(v){ return v || ""; }\n' +
-'      function open(url){ if(url){ window.open(url, "_blank", "noopener"); } else { document.getElementById("err").hidden = false; } }\n' +
-'      document.getElementById("payPal").addEventListener("click", function(e){ e.preventDefault(); open(pp); });\n' +
-'      document.getElementById("cardPay").addEventListener("click", function(e){ e.preventDefault(); open(card); });\n' +
-'      document.getElementById("applePay").addEventListener("click", function(e){ e.preventDefault(); open(pp); });\n' +
-'      document.getElementById("googlePay").addEventListener("click", function(e){ e.preventDefault(); open(pp); });\n' +
-'    })();\n' +
-'  <\/script>\n</body>\n</html>';
-  }
-
-  // This editor itself uses the generated standalone markup for its preview.
-  function editorCheckout(pp, card, cfg){
-    var amount = cfg.amount || "0.00",
-        currency = cfg.currency || "USD",
-        item = cfg.item || "Payment",
-        buttons = "";
-
-    if(cfg.methods.paypal){
-      buttons += '<a class="paybtn paypal" data-action="paypal" href="#">Pay with PayPal</a>';
-    }
-    if(cfg.methods.card){
-      buttons += '<div class="divider">or pay by card</div>' +
-                 '<a class="paybtn card" data-action="card" href="#">Debit / Credit Card</a>';
-    }
-    if(cfg.methods.apple){
-      buttons += '<div class="divider">available on supported devices</div>' +
-                 '<a class="paybtn apple" data-action="apple" href="#"> Pay with Apple Pay</a>';
-    }
-    if(cfg.methods.google){
-      buttons += '<a class="paybtn google" data-action="google" href="#">G Pay with Google</a>';
-    }
-
-    id("checkout").innerHTML =
-      '<img src="https://www.paypalobjects.com/webstatic/mktg/Logo/pp-logo-200px.png" alt="PayPal">' +
-      '<div class="item">' + html(item) + '</div>' +
-      '<div class="price">' + html(currency) + ' ' + html(amount) + '</div>' +
-      buttons +
-      '<div class="secure">Secure checkout • Card details are entered on PayPal’s page</div>' +
-      '<div class="tos">Invoice: ' + html(cfg.invoice || "—") + '</div>';
-
-    id("checkout").querySelectorAll("[data-action]").forEach(function(a){
-      a.addEventListener("click", function(e){
-        e.preventDefault();
-        var action = a.getAttribute("data-action");
-        // In this editor, wallet buttons intentionally use the same secure PayPal flow.
-        window.open(action === "paypal" || action === "apple" || action === "google" ? pp : card, "_blank", "noopener");
-      });
-    });
-  }
-
-  function validate(){
-    var err = "";
-    var email = text("email"), amount = validAmount();
-
-    if(!email || !/^\S+@\S+\.\S+$/.test(email)){
-      err = "Enter a valid PayPal business email.";
-    } else if(!amount){
-      err = "Enter a valid amount (0 or more).";
-    }
-
-    var el = id("linkError");
-    el.textContent = err;
-    el.style.display = err ? "block" : "none";
-    return !err;
-  }
-
-  function generate(){
-    var amount = validAmount();
-    var links = [], ok = false;
-
-    // Token allows the shared checkout to represent an individual payment.
-    var token = Math.random().toString(36).slice(2) + Date.now().toString(36);
-    var cfg = {
-      email:text("email"),
-      item:text("item") || "Payment",
-      amount:amount,
-      currency:currencySelect.value,
-      invoice:text("invoice"),
-      returnUrl:text("returnUrl"),
-      cancelUrl:text("cancelUrl"),
-      methods:{
-        paypal:checked("mPaypal"),
-        card:checked("mCard"),
-        apple:checked("mApple"),
-        google:checked("mGoogle")
-      }
-    };
-
-    if(!validate()){
-      id("status").textContent = "Fix settings";
-      id("status").style.color = "#b42318";
-      id("status").style.background = "#fef3f2";
-      id("status").style.borderColor = "#fecdca";
-      id("output").value = "";
-      id("shareLink").value = "";
-      return;
-    }
-
-    // Card guest checkout uses the PayPal-hosted form. If the merchant has a
-    // PCI-compliant hosted card URL, it can be included in a supported build.
-    var paypalLink = paypalUrl();
-    var cardLink = paypalUrl("guest-card");
-
-    links.push('var c=' + JSON.stringify(cfg) + ';');
-    links.push('var u=' + JSON.stringify(paypalLink) + ';');
-    links.push('var p=' + JSON.stringify(cardLink) + ';');
-
-    // The client-facing share page contains the real checkout.
-    // It cannot be fully created inside this editor, so the complete downloadable
-    // page is the source of truth for the share link destination.
-    cfg.paypal = paypalLink;
-    cfg.card = cardLink;
-    cfg.encoded = encodeURIComponent(JSON.stringify(cfg)).replace(/'/g,"%27");
-
-    var page = standaloneHTML(cfg);
-    var share = location.href.split("#")[0] +
-      "#pay=" + btoa(unescape(encodeURIComponent(JSON.stringify(cfg))));
-
-    // Show editor preview and copyable outputs.
-    editorCheckout(cfg.paypal, cfg.card, cfg);
-    id("output").value = page;
-    id("shareLink").value = share;
-
-    // Hash routing lets the saved page work when copied into one HTML file.
-    if(cfg.methods.paypal) ok = true;
-    id("status").textContent = ok ? cfg.currency + " " + cfg.amount + " • ready" : "Ready";
-    id("status").style.color = "#175cd3";
-    id("status").style.background = "#eff8ff";
-    id("status").style.borderColor = "#b2ddff";
-
-    // Auto-run the shared hash version only if used inside this editor.
-    window.location.hash = "pay=" + encodeURIComponent(JSON.stringify(cfg));
-  }
-
-  function copyText(value, done){
-    if(!value){ return; }
-    navigator.clipboard.writeText(value).then(function(){
-      if(done) done();
-    }).catch(function(){
-      var ta=document.createElement("textarea");
-      ta.value=value;document.body.appendChild(ta);ta.select();
-      document.execCommand("copy");document.body.removeChild(ta);
-      if(done) done();
-    });
-  }
-
-  function toast(btn, msg){
-    var old=btn.textContent;
-    btn.textContent=msg;
-    setTimeout(function(){btn.textContent=old},1300);
-  }
-
-  id("gen").addEventListener("click", generate);
-  id("copyLink").addEventListener("click", function(){copyText(id("shareLink").value, function(){toast(this,"Copied!")}.bind(this));});
-  id("copyHtml").addEventListener("click", function(){copyText(id("output").value, function(){toast(this,"HTML copied")}.bind(this));});
-  id("copyShare").addEventListener("click", function(){copyText(id("shareLink").value, function(){toast(this,"Copied!")}.bind(this));});
-
-  id("download").addEventListener("click", function(){
-    if(!id("output").value){ generate(); }
-    if(!id("output").value){ return; }
-    var blob = new Blob([id("output").value], {type:"text/html;charset=utf-8"});
-    var a = document.createElement("a");
-    a.href = URL.createObjectURL(blob);
-    a.download = "paypal-card-checkout-" + (text("currency") || "USD") + ".html";
-    a.click();
-    setTimeout(function(){URL.revokeObjectURL(a.href)},1000);
-  });
-
-  // Load #pay=... into the preview, the same data used by a downloaded page.
-  function loadHash(){
-    if(!location.hash || location.hash.indexOf("pay=") !== 1) return;
-    try{
-      var cfg = JSON.parse(decodeURIComponent(location.hash.slice(5)));
-      id("email").value=cfg.email||"";id("item").value=cfg.item||"product name";
-      id("amount").value=cfg.amount||15;id("invoice").value=cfg.invoice||"";
-      id("returnUrl").value=cfg.returnUrl||"";id("cancelUrl").value=cfg.cancelUrl||"";
-      id("currency").value=cfg.currency||"USD";
-      id("mPaypal").checked=cfg.methods.paypal!==false;
-      id("mCard").checked=cfg.methods.card!==false;
-      id("mApple").checked=cfg.methods.apple!==false;
-      id("mGoogle").checked=cfg.methods.google!==false;
-      editorCheckout(cfg.paypal,cfg.card,cfg);
-      id("output").value=standaloneHTML(cfg);
-      id("shareLink").value=location.href;
-      id("status").textContent="Shared checkout";
-    }catch(e){
-      id("checkout").innerHTML='<div class="error">Invalid shared payment link.</div>';
-    }
-  }
-
-  window.addEventListener("hashchange", loadHash);
-
-  // Open first-run experience only when the user is not loading a payment hash.
-  if(!location.hash){ generate(); } else { loadHash(); }
+/* ---------- route ---------- */
+var m=location.hash.match(/^#p=([\w-]+)$/);
+if(m){
+ $("genView").classList.add("hide");$("clientView").classList.remove("hide");
+ try{
+  var c=b64d(m[1]);
+  if(check(c))throw 0;
+  document.title=(c.i||"Payment")+" | Secure checkout";
+  $("clientCo").innerHTML=K.buttons(c,false);K.wire($("clientCo"),c);
+ }catch(x){$("clientCo").innerHTML="<b>Invalid or damaged payment link.</b>"}
+}else{onCur()}
 })();
 </script>
 </body>
